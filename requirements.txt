@@ -1,0 +1,13 @@
+Django==1.11.3
+django-cors-headers==2.1.0
+django-filter==1.0.4
+djangorestframework==3.6.3
+djangorestframework-jwt==1.11.0
+imageio==2.2.0
+Markdown==2.6.8
+numpy==1.13.1
+olefile==0.44
+Pillow==4.2.1
+psycopg2==2.7.1
+PyJWT==1.5.2
+pytz==2017.2
