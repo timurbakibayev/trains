@@ -1,3 +1,10 @@
 from django.shortcuts import render
+from tutu import draw
 
-# Create your views here.
+def index(request):
+    draw.something()
+    context = {}
+    return render(request, 'index.html', context)
+
+
+
