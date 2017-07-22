@@ -19,5 +19,8 @@ from tutu import views
 
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
-    url(r'^$', views.index),
+    url(r'^$', views.index, name="index"),
+    url(r'^track/new/$', views.new_track, name='new_track'),
+    url(r'^track/edit/(?P<track_id>.*)$', views.edit_track, name="edit_track"),
+
 ]
