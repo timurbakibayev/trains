@@ -134,31 +134,59 @@
 </nav>
 
 <div style="padding: 5%">
-    <h3 style="text-align: center">Список путей</h3>
+    <h3 style="text-align: center">Путь {{ track.name }}</h3>
     <table width="100%" style="margin-top: 30px; margin-left: 5%; width: 90%" class="table">
         <thead>
         <tr>
-            <th>Путь</th>
-            <th>Длина пути</th>
+            <th>Разд. пункт</th>
+            <th>Позиция</th>
+            <th>Кол-во путей</th>
+            <th>Ёмкость</th>
+            <th>Разгон</th>
+            <th>Осн время</th>
+            <th>Торможение</th>
+            <th>Общее время</th>
+            <th>Проп. сп.</th>
             <th>Изменить</th>
         </tr>
         </thead>
-        {% for track in tracks %}
+        {% for switch in switches %}
             <tr>
                 <td>
-                    <a href="{% url "show_track" track.id %}">{{ track.name }}</a>
+                    {{ switch.switch.name }}
                 </td>
                 <td>
-                    {{ track.length }}
+                    {{ switch.switch.position }}
                 </td>
-                <td><a data-toggle="modal" href="{% url "edit_track" track.id %}" data-target="#myModal">🖉 Ред.</a>
+                <td>
+                    {{ switch.switch.number_of_tracks }}
+                </td>
+                <td>
+                    {{ switch.switch.trains_fit }}
+                </td>
+                <td>
+                    {{ switch.switch.mins_acc }}
+                </td>
+                <td>
+                    {{ switch.switch.mins_main }}
+                </td>
+                <td>
+                    {{ switch.switch.mins_brk }}
+                </td>
+                <td>
+                    {{ switch.sum }}
+                </td>
+                <td>
+                    {{ switch.capacity }}
+                </td>
+                <td><a data-toggle="modal" href="{% url "edit_switch" switch.switch.id %}" data-target="#myModal">🖉 Ред.</a>
                 </td>
             </tr>
         {% endfor %}
     </table>
     <br><br>
     <div style="margin-left: 5%; margin-bottom: 40px">
-        <a data-toggle="modal" href="{% url "new_track" %}" data-target="#myModal">Новый путь</a>
+        <a data-toggle="modal" href="{% url "new_switch" track.id %}" data-target="#myModal">Новый раздельный пункт</a>
     </div>
 </div>
 

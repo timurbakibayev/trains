@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+
+
+<div>
+    <form class="form-labels-on-top" action="{% url "new_switch" track.id %}" method="post">
+        {% csrf_token %}
+        <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+            <h4 class="modal-title">Новый раздельный пункт для {{ track.name }}</h4>
+
+        </div>
+
+        {% if errors %}
+
+            <div align="center" style="color:#FF0000">
+                <h3>{{ errors }}</h3>
+                <br><br>
+            </div>
+
+        {% endif %}
+        <div class="modal-body">
+            <div class="form-row">
+                <label>
+                    <span>Наименование</span>
+                    <input type="text" name="switch_name">
+                </label>
+            </div>
+
+            <div class="form-row">
+                <label>
+                    <span>Расположение от Начала Пути (в км.)</span>
+                    <input type="number" step="0.01" name="switch_position">
+                </label>
+            </div>
+
+            <div class="form-row">
+                <label>
+                    <span>Разгон (в минутах, от предыдущей станции)</span>
+                    <input type="number" name="switch_acc">
+                </label>
+            </div>
+
+            <div class="form-row">
+                <label>
+                    <span>Основное время в пути (в минутах, от предыдущей станции)</span>
+                    <input type="number" name="switch_main">
+                </label>
+            </div>
+
+            <div class="form-row">
+                <label>
+                    <span>Торможение (в минутах, от предыдущей станции)</span>
+                    <input type="number" name="switch_brk">
+                </label>
+            </div>
+
+            <div class="form-row">
+                <label>
+                    <span>Ёмкость (сколько поездов может ожидать на раздельном пункте)</span>
+                    <input type="number" name="switch_trains_fit">
+                </label>
+            </div>
+
+            <div class="form-row">
+                <label>
+                    <span>Кол-во путей (кол-во путей, ведущих от предыдущей станции)</span>
+                    <input type="number" name="switch_number_of_tracks">
+                </label>
+            </div>
+
+        </div>
+
+        <div class="modal-footer">
+            <button type="button" class="btn btn-default" data-dismiss="modal">Закрыть</button>
+            <button type="submit" class="btn btn-primary">Добавить</button>
+        </div>
+
+
+    </form>
+</div>
+
+</html>
