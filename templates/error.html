@@ -134,35 +134,10 @@
 </nav>
 
 <div style="padding: 5%">
-    <h3 style="text-align: center">Список путей</h3>
-    <table width="100%" style="margin-top: 30px; margin-left: 5%; width: 90%" class="table">
-        <thead>
-        <tr>
-            <th>Путь</th>
-            <th>Начало</th>
-            <th>Длина пути</th>
-            <th>Изменить</th>
-        </tr>
-        </thead>
-        {% for track in tracks %}
-            <tr>
-                <td>
-                    <a href="{% url "show_track" track.id %}">{{ track.name }}</a>
-                </td>
-                <td>
-                    {{ track.start_name }}
-                </td>
-                <td>
-                    {{ track.length }}
-                </td>
-                <td><a data-toggle="modal" href="{% url "delete_track" track.id %}" data-target="#myModal">✘ Удалить</a>  <a data-toggle="modal" href="{% url "edit_track" track.id %}" data-target="#myModal">🖉 Ред.</a>
-                </td>
-            </tr>
-        {% endfor %}
-    </table>
+    <h2 style="text-align: center">Не найдено :(</h2>
     <br><br>
     <div style="margin-left: 5%; margin-bottom: 40px">
-        <a data-toggle="modal" href="{% url "new_track" %}" data-target="#myModal">Новый путь</a>
+        <a href="{% url "index" %}">На главную</a>
     </div>
 </div>
 

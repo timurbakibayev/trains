@@ -3,7 +3,7 @@
 
 
 <div>
-    <form class="form-labels-on-top" action="{% url "new_switch" track.id %}" method="post">
+    <form class="form-labels-on-top" action="{% url "edit_switch" track.id switch.id  %}" method="post">
         {% csrf_token %}
         <div class="modal-header">
             <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
@@ -73,10 +73,8 @@
 
         <div class="modal-footer">
             <button type="button" class="btn btn-default" data-dismiss="modal">Закрыть</button>
-            <button type="submit" class="btn btn-primary">Добавить</button>
+            <button type="submit" class="btn btn-primary">Сохранить</button>
         </div>
-
-
     </form>
 </div>
 

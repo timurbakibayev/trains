@@ -150,10 +150,15 @@
             <th>Изменить</th>
         </tr>
         </thead>
+        <tr>
+            <td>
+                {{ track.start_name }}
+            </td>
+        </tr>
         {% for switch in switches %}
             <tr>
                 <td>
-                    {{ switch.switch.name }}
+                    <br>{{ switch.switch.name }}
                 </td>
                 <td>
                     {{ switch.switch.position }}
@@ -179,7 +184,9 @@
                 <td>
                     {{ switch.capacity }}
                 </td>
-                <td><a data-toggle="modal" href="{% url "edit_switch" switch.switch.id %}" data-target="#myModal">🖉 Ред.</a>
+                <td><a data-toggle="modal" href="{% url "delete_switch" track.id switch.switch.id %}" data-target="#myModal">✘
+                    Удалить</a>  <a data-toggle="modal" href="{% url "edit_switch" track.id switch.switch.id %}" data-target="#myModal">🖉
+                    Ред.</a>
                 </td>
             </tr>
         {% endfor %}

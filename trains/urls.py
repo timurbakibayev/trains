@@ -21,9 +21,11 @@ urlpatterns = [
     url(r'^admin/', admin.site.urls),
     url(r'^$', views.index, name="index"),
     url(r'^track/new/$', views.new_track, name='new_track'),
-    url(r'^track/edit/(?P<track_id>.*)$', views.edit_track, name="edit_track"),
-    url(r'^switch/edit/(?P<switch_id>.*)$', views.edit_switch, name="edit_switch"),
+    url(r'^track/edit/(?P<track_id>[0-9]*)$', views.edit_track, name="edit_track"),
+    url(r'^track/delete/(?P<track_id>[0-9]*)$', views.delete_track, name="delete_track"),
+    url(r'^track/(?P<track_id>[0-9]*)/switch/edit/(?P<switch_id>[0-9]*)$', views.edit_switch, name="edit_switch"),
+    url(r'^track/(?P<track_id>[0-9]*)/switch/delete/(?P<switch_id>[0-9]*)$', views.delete_switch, name="delete_switch"),
     url(r'^track/(?P<track_id>[0-9]*)$', views.show_track, name="show_track"),
-    url(r'^track/(?P<track_id>.*)/new_switch$', views.new_switch, name="new_switch"),
+    url(r'^track/(?P<track_id>[0-9]*)/new_switch$', views.new_switch, name="new_switch"),
 
 ]

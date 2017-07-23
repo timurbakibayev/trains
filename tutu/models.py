@@ -4,6 +4,7 @@ from django.db import models
 class Track(models.Model):
     length = models.DecimalField(default=1000, max_digits=7, decimal_places=2) #in meters
     name = models.TextField(default="Старт-Финиш")
+    start_name = models.TextField(default="Старт")
 
     def __str__(self):
         return self.name + " (" + str(self.length) + " км.)"
