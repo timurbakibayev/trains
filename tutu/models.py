@@ -2,9 +2,16 @@ from django.db import models
 
 # Create your models here.
 class Track(models.Model):
-    length = models.DecimalField(default=1000, max_digits=7, decimal_places=2) #in meters
     name = models.TextField(default="Старт-Финиш")
     start_name = models.TextField(default="Старт")
+
+    def length(self):
+        switches = Switch.objects.filter(track_id=self.id)
+        maximum = 0
+        for switch in switches:
+            if maximum < switch.position:
+                maximum = switch.position
+        return maximum
 
     def __str__(self):
         return self.name + " (" + str(self.length) + " км.)"

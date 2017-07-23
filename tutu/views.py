@@ -9,7 +9,12 @@ from tutu import draw
 def index(request):
     tracks = Track.objects.all()
     # draw.something()
-    context = {"tracks": tracks}
+    tracks_plus = []
+    for track in tracks:
+        t = {"id":track.id, "name":track.name, "start_name":track.start_name}
+        t["length"] = track.length()
+        tracks_plus.append(t)
+    context = {"tracks": tracks_plus}
     return render(request, 'index.html', context)
 
 
@@ -185,3 +190,11 @@ def show_track(request, track_id):
     context = {"track": track, "switches": switches}
 
     return render(request, "show_track.html", context)
+
+
+def thumbnail_track(request, track_id):
+    try:
+        track = Track.objects.get(pk=int(track_id))
+    except:
+        return render(request, "error.html")
+    return draw.draw_track(track)

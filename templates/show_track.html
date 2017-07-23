@@ -135,7 +135,8 @@
 
 <div style="padding: 5%">
     <h3 style="text-align: center">Путь {{ track.name }}</h3>
-    <table width="100%" style="margin-top: 30px; margin-left: 5%; width: 90%" class="table">
+    <h4 style="text-align: center">Длина пути {{ track.length }} км.</h4>
+    <table width="100%" style="margin-top: 30px; margin-left: 5%; width: 90%; text-align: center" class="table">
         <thead>
         <tr>
             <th>Разд. пункт</th>
@@ -184,13 +185,19 @@
                 <td>
                     {{ switch.capacity }}
                 </td>
-                <td><a data-toggle="modal" href="{% url "delete_switch" track.id switch.switch.id %}" data-target="#myModal">✘
-                    Удалить</a>  <a data-toggle="modal" href="{% url "edit_switch" track.id switch.switch.id %}" data-target="#myModal">🖉
+                <td><a data-toggle="modal" href="{% url "delete_switch" track.id switch.switch.id %}"
+                       data-target="#myModal">✘
+                    Удалить</a> <a data-toggle="modal" href="{% url "edit_switch" track.id switch.switch.id %}"
+                                   data-target="#myModal">🖉
                     Ред.</a>
                 </td>
             </tr>
         {% endfor %}
     </table>
+
+    <div style="padding-left: 10%; padding-right: 10%; text-align: center">
+        <img src="{% url "thumbnail_track" track.id %}" width="80%">
+    </div>
     <br><br>
     <div style="margin-left: 5%; margin-bottom: 40px">
         <a data-toggle="modal" href="{% url "new_switch" track.id %}" data-target="#myModal">Новый раздельный пункт</a>

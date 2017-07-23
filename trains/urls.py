@@ -26,6 +26,7 @@ urlpatterns = [
     url(r'^track/(?P<track_id>[0-9]*)/switch/edit/(?P<switch_id>[0-9]*)$', views.edit_switch, name="edit_switch"),
     url(r'^track/(?P<track_id>[0-9]*)/switch/delete/(?P<switch_id>[0-9]*)$', views.delete_switch, name="delete_switch"),
     url(r'^track/(?P<track_id>[0-9]*)$', views.show_track, name="show_track"),
+    url(r'^track/(?P<track_id>[0-9]*)/thumbnail$', views.thumbnail_track, name="thumbnail_track"),
     url(r'^track/(?P<track_id>[0-9]*)/new_switch$', views.new_switch, name="new_switch"),
 
 ]
