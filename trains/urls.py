@@ -16,6 +16,7 @@ Including another URLconf
 from django.conf.urls import url
 from django.contrib import admin
 from tutu import views
+from tutu import views_sim
 
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
@@ -28,5 +29,6 @@ urlpatterns = [
     url(r'^track/(?P<track_id>[0-9]*)$', views.show_track, name="show_track"),
     url(r'^track/(?P<track_id>[0-9]*)/thumbnail$', views.thumbnail_track, name="thumbnail_track"),
     url(r'^track/(?P<track_id>[0-9]*)/new_switch$', views.new_switch, name="new_switch"),
+    url(r'^track/(?P<track_id>[0-9]*)/simulation/$', views_sim.simulation, name="simulation"),
 
 ]

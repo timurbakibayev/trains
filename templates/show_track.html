@@ -139,26 +139,31 @@
     <table width="100%" style="margin-top: 30px; margin-left: 5%; width: 90%; text-align: center" class="table">
         <thead>
         <tr>
-            <th>Разд. пункт</th>
+            <th>Номер</th>
+            <th>Раздельный пункт</th>
             <th>Позиция</th>
             <th>Кол-во путей</th>
             <th>Ёмкость</th>
-            <th>Разгон</th>
-            <th>Осн время</th>
-            <th>Торможение</th>
-            <th>Общее время</th>
+            <th>Разг.</th>
+            <th>Время хода</th>
+            <th>Торм.</th>
+            <th>Скорость</th>
             <th>Проп. сп.</th>
             <th>Изменить</th>
         </tr>
         </thead>
         <tr>
-            <td>
+            <td>1</td>
+            <td style="text-align: left">
                 {{ track.start_name }}
             </td>
         </tr>
         {% for switch in switches %}
             <tr>
                 <td>
+                    <br>{{ switch.number }}
+                </td>
+                <td style="text-align: left">
                     <br>{{ switch.switch.name }}
                 </td>
                 <td>
@@ -171,37 +176,45 @@
                     {{ switch.switch.trains_fit }}
                 </td>
                 <td>
-                    {{ switch.switch.mins_acc }}
+                    {{ switch.switch.mins_acc }} м
                 </td>
                 <td>
-                    {{ switch.switch.mins_main }}
+                    {{ switch.switch.mins_main }} м
                 </td>
                 <td>
-                    {{ switch.switch.mins_brk }}
+                    {{ switch.switch.mins_brk }} м
                 </td>
                 <td>
-                    {{ switch.sum }}
+                    {{ switch.speed }} км.ч.
                 </td>
                 <td>
                     {{ switch.capacity }}
                 </td>
                 <td><a data-toggle="modal" href="{% url "delete_switch" track.id switch.switch.id %}"
                        data-target="#myModal">✘
-                    Удалить</a> <a data-toggle="modal" href="{% url "edit_switch" track.id switch.switch.id %}"
-                                   data-target="#myModal">🖉
-                    Ред.</a>
+                </a> <a data-toggle="modal" href="{% url "edit_switch" track.id switch.switch.id %}"
+                        data-target="#myModal">🖉
+                </a>
                 </td>
             </tr>
         {% endfor %}
     </table>
-
+    <div style="margin-left: 10%; margin-bottom: 40px">
+        <a data-toggle="modal" href="{% url "new_switch" track.id %}" data-target="#myModal">Новый раздельный пункт</a>
+    </div>
     <div style="padding-left: 10%; padding-right: 10%; text-align: center">
         <img src="{% url "thumbnail_track" track.id %}" width="80%">
     </div>
-    <br><br>
-    <div style="margin-left: 5%; margin-bottom: 40px">
-        <a data-toggle="modal" href="{% url "new_switch" track.id %}" data-target="#myModal">Новый раздельный пункт</a>
-    </div>
+    {% if not track.simulation_in_progress %}
+        <a href="#" id="sim_button" style="zoom: 0.8; margin-left: 10%" class="btn btn-primary"><span
+                class="glyphicon glyphicon-flash"></span> Запустить симулятор</a>
+    {% else %}
+        <a href="#" id="sim_button" style="zoom: 0.8; margin-left: 10%" class="btn btn-primary"><span
+                class="glyphicon glyphicon-flash"></span> Симуляция в процессе. Нажмите для обновления.</a>
+    {% endif %}
+    {% if track.simulation_filename %}
+        <a href="#" class="btn btn-success"><span class="glyphicon glyphicon-cloud-download"></span> Скачать видео (GIF)</a>
+    {% endif %}
 </div>
 
 
@@ -211,7 +224,6 @@
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
                 <h4 class="modal-title">Modal title</h4>
-
             </div>
             <div class="modal-body">
                 <div class="te"></div>
@@ -226,5 +238,52 @@
 
     <!-- /.modal-dialog -->
 </div>
+
+<script language="JavaScript">
+    {% if not track.simulation_in_progress %}
+        $("#sim_button").click(function (e) {
+            e.preventDefault();
+            var url = "/track/{{ track.id }}/simulation/";
+            var xhr = new XMLHttpRequest();
+            var trackId = {{ track.id }};
+            var sim_button = document.getElementById('sim_button');
+            sim_button.innerHTML = "Запрос сделан";
+            console.log("Initiating simulation for track no {{ track.id }}");
+            xhr.open('POST', url, true);
+            xhr.setRequestHeader('Content-Type', 'application/json; charset=UTF-8');
+            xhr.addEventListener('load', function () {
+                var responseObject = JSON.parse(this.response);
+                console.log(responseObject);
+                if (this.status == 201) {
+                    location.reload();
+                } else {
+                    var errors = "";
+                    for (var k in responseObject) {
+                        if (responseObject.hasOwnProperty(k)) {
+                            if (errors != "")
+                                errors += ", ";
+                            console.log(k + ": " + responseObject[k]);
+                            errors += k + ": " + responseObject[k];
+                        }
+                    }
+                    if (errors == "")
+                        errors = "Something wrong just happened";
+                    alert(errors);
+                }
+            });
+            var sendObject = JSON.stringify({
+                track_id: {{ track.id }},
+                start: true
+            });
+            console.log("Sending", sendObject);
+            xhr.send(sendObject);
+        });
+    {% else %}
+        $("#sim_button").click(function (e) {
+            e.preventDefault();
+            location.reload();
+        });
+    {% endif %}
+</script>
 </body>
 </html>

@@ -1,12 +1,14 @@
 #from .images2gif import writeGif
 #import images2gif as i2g
 import imageio
+import os
 from django.http import HttpResponse
 from tutu.models import Switch
 from tutu.models import Track
-from PIL import Image, ImageDraw
+from PIL import Image, ImageDraw, ImageFont
 from trains import settings
 pics = settings.BASE_DIR + "\\pics\\"
+
 
 def something():
     files = []
@@ -24,30 +26,56 @@ def something():
     image.save(pics + "test1.png", "PNG")
     files.append(pics + "test1.png")
 
-    compose_video(files)
+    compose_video(files, "movie")
 
-def compose_video(filenames):
-    with imageio.get_writer(pics + "movie.gif", mode='I') as writer:
-        for filename in filenames:
+
+def compose_video(files,new_filename):
+    with imageio.get_writer(pics + new_filename + ".gif", mode='I') as writer:
+        for filename in files:
             image = imageio.imread(filename)
             writer.append_data(image)
-
-    #writeGif(pics + "images.gif", filenames, duration=0.3, dither=0)
+            os.remove(filename)
 
 
 def draw_track(track):
     width = 1000
     height = 50
-    image = Image.new("RGBA", (width, height), (0, 0, 0, 0))
+    image = Image.new("RGBA", (int(width*1.1), int(height*1.2)), (0, 0, 0, 0))
     draw = ImageDraw.Draw(image)
-    draw.rectangle(xy=(-1,height*2/6,width,height*4/6), fill="white", outline="black")
     # draw.ellipse((10, 10, 30, 30), fill="black", outline="green")
     switches = Switch.objects.filter(track_id = track.id)
-    draw.rectangle(xy=(0,height/6,1,height*5/6),fill="black")
-    for switch in switches:
-        pos = switch.position / track.length() * width
-        draw.rectangle(xy=(pos - 1, height/6, pos, height*5/6), fill="black")
 
+    text_position_y = height*9/12
+    font = ImageFont.truetype("arial.ttf", int(height/3))
+    draw.text(xy=(2,text_position_y), text="1", fill="green", font=font)
+    last_switch_position = 0
+    for i,switch in enumerate(switches):
+        x1 = last_switch_position / track.length() * width
+        x2 = switch.position / track.length() * width
+        if switch.number_of_tracks > 1:
+            draw.rectangle(xy=(x1, height * 4 / 12, x2, height * 6 / 12), fill="white", outline="black")
+            draw.rectangle(xy=(x1, height * 6 / 12, x2, height * 8 / 12), fill="white", outline="black")
+        else:
+            draw.rectangle(xy=(x1, height * 5 / 12, x2, height * 7 / 12), fill="white", outline="black")
+        draw.rectangle(xy=(x1, height / 6, x1+1, height * 5 / 6), fill="black")
+        draw.rectangle(xy=(x2 - 1, height / 6, x2, height * 5 / 6), fill="black")
+
+        pos = switch.position / track.length() * width
+        draw.text(xy=(pos+1, text_position_y), text=str(i+2), fill="green", font=font)
+        last_switch_position = switch.position
+    font = ImageFont.truetype("arial.ttf", int(height/3))
+    text_position_y = 0
+    last_switch_position = 0
+    for i,switch in enumerate(switches):
+        text = str(switch.position - last_switch_position) + " км."
+        text_length = font.getsize(text=text)[0]
+        if text_length > (switch.position - last_switch_position)/track.length() * width:
+            text = str(switch.position - last_switch_position)
+            text_length = font.getsize(text=text)[0]
+        if text_length < (switch.position - last_switch_position) / track.length() * width:
+            pos =  int((switch.position + last_switch_position)/2/track.length() * width - int(text_length / 2))
+            draw.text(xy=(pos, text_position_y), text=text, fill="black", font=font)
+        last_switch_position = switch.position
     del draw
     response = HttpResponse(content_type="image/png")
     image.save(response, "PNG")

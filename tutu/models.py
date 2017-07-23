@@ -4,6 +4,8 @@ from django.db import models
 class Track(models.Model):
     name = models.TextField(default="Старт-Финиш")
     start_name = models.TextField(default="Старт")
+    simulation_in_progress = models.BooleanField(default=False)
+    simulation_filename = models.TextField(max_length=1000, blank=True, null=True)
 
     def length(self):
         switches = Switch.objects.filter(track_id=self.id)
@@ -14,7 +16,7 @@ class Track(models.Model):
         return maximum
 
     def __str__(self):
-        return self.name + " (" + str(self.length) + " км.)"
+        return self.name + " (" + str(self.length()) + " км.)"
 
 class Switch(models.Model):
     track = models.ForeignKey(Track, on_delete=models.CASCADE)

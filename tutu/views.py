@@ -8,7 +8,7 @@ from tutu import draw
 
 def index(request):
     tracks = Track.objects.all()
-    # draw.something()
+    draw.something()
     tracks_plus = []
     for track in tracks:
         t = {"id":track.id, "name":track.name, "start_name":track.start_name}
@@ -182,10 +182,16 @@ def show_track(request, track_id):
         return render(request, "error.html")
     switches = []
 
-    for switch in switches_orig:
+    prev_pos = 0
+    for i,switch in enumerate(switches_orig):
         new_sw = {"switch": switch, "sum": switch.mins_acc + switch.mins_brk + switch.mins_main}
-        new_sw["capacity"] = new_sw["sum"] + 1
+        new_sw["capacity"] = (int((60*23)/new_sw["sum"]),int((60*23)/new_sw["sum"]/2))[switch.number_of_tracks<2]
+        new_sw["number"] = i+2
+        length = switch.position - prev_pos
+        time = new_sw["sum"]/60
+        new_sw["speed"] = int(float(length)/time*100)/100
         switches.append(new_sw)
+        prev_pos = switch.position
 
     context = {"track": track, "switches": switches}
 
