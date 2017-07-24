@@ -126,9 +126,10 @@ def all(track, prefix, step, trains, switches):
 
     radius = height/12
     for train in trains:
-        x = float(train.position/length*width)
-        y = float(height/2)+radius*train.level
-        draw.ellipse((x-radius, y-radius, x+radius, y+radius), fill=train.color)
+        if train.running:
+            x = float(train.position/float(length)*width)
+            y = float(height/2)+radius*train.level
+            draw.ellipse((x-radius, y-radius, x+radius, y+radius), fill=train.color)
 
     del draw
     image.save(filename, "PNG")

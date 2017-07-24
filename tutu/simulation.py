@@ -20,37 +20,105 @@ def start_sim(track_id):
 
 
 class Train:
-    global switches_global, trains
-
     def __init__(self, dx):
         self.dx = dx
         self.position = 0
+        self.switch_position_0_to_1 = 0
+        self.running = False
+        self.finished = False
         self.waiting = True
         self.station = None
         self.switch = None
-        self.going_to_station = 0
-        self.color = (125,125,0,255)
+        self.next_switch = None
+        self.color = (random.randint(50,230),random.randint(50,230),random.randint(50,230),255)
         self.level = 0
+
+    def set_switch_position_0_to_1(self, new_value):
+        self.switch_position_0_to_1 = new_value
+
+    def set_position(self, position):
+        self.position = position
+
+    def set_switch(self, switch):
+        self.switch = switch
+
+    def set_next_switch(self, switch):
+        self.next_switch = switch
+
+    def set_running(self, running):
+        self.running = running
+
+    def set_finished(self, finished):
+        self.finished = finished
 
 
 def simulate(track, prefix):
-    one_train = Train(1)
     switches = Switch.objects.filter(track_id=track.id)
-    global switches_global, trains
+    first_switch = None
+    last_switch = None
+    prev_sw = {}
+    next_sw = {}
+    start_position = {}
+    prev_switch = None
+    for switch in switches:
+        if first_switch is None:
+            start_position[switch.id] = 0
+            first_switch = switch
+            prev_sw[switch.id] = None
+        else:
+            start_position[switch.id] = prev_switch.position
+            prev_sw[switch.id] = prev_switch
+            next_sw[prev_switch.id] = switch
+        last_switch = switch
+        prev_switch = switch
+    print("Start positions", start_position)
+    next_sw[last_switch.id] = None
+    trains = []
     length = track.length()
-    trains = [one_train]
+    for i in range(200):
+        train = Train((1,-1)[i % 2])
+        train.next_switch = (first_switch,last_switch)[i % 2]
+        trains.append(train)
     files = []
     number_of_steps_to_simulate = 1000
     for step in range(number_of_steps_to_simulate):
-        if step % 300 == 0:
-            track.simulation_progress = int(step/number_of_steps_to_simulate*100/2)
+        if step % 200 == 0:
+            track.simulation_progress = int(step/number_of_steps_to_simulate*100/1.2)
             track.save()
-        for one_train in trains:
-            if 0 < one_train.position+one_train.dx < length:
-                if one_train.switch is None or one_train.switch.number_of_tracks == 0:
-                    one_train.level = 0
-                else:
-                    one_train.level = (-1,1)[one_train.dx>0]
-        if step%4 == 0:
+        # ----------------------------------------- Simulation <
+
+        # ----------- if train is waiting, check if next_switch is free <
+        for train in trains:
+            if train.switch is None and not train.finished:
+                switch_is_busy = False
+                for train1 in trains:
+                    if train1.set_switch(train.next_switch):
+                        switch_is_busy = True
+                if not switch_is_busy:
+                    train.set_switch(train.next_switch)
+                    train.set_switch_position_0_to_1((0,1)[train.dx > 0])
+                    if train.switch is None:
+                        train.set_finished(True)
+                        train.set_running(False)
+                    else:
+                        train.set_running(True)
+                    if train.switch is not None:
+                        if train.dx > 0:
+                            train.set_next_switch(next_sw[train.switch.id])
+                        else:
+                            train.set_next_switch(prev_sw[train.switch.id])
+        # ----------- if train is waiting, check if next_switch is free >
+        # ----------- if train is on switch and running, progress <
+        for train in trains:
+            if train.switch is not None:
+                train.set_switch_position_0_to_1(train.switch_position_0_to_1 + train.dx * 0.1)
+                if train.switch_position_0_to_1 < 0 or train.switch_position_0_to_1 > 1:
+                    train.set_switch(None)
+                if train.switch is not None:
+                    r = train.switch_position_0_to_1
+                    start = float(start_position[train.switch.id])
+                    train.set_position(start + r*(float(train.switch.position) - float(start)))
+
+        if step % 4 == 0:
             files.append(draw.all(track, prefix, step, trains, switches))
     draw.compose_video(files, prefix)
