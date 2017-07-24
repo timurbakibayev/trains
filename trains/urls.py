@@ -30,5 +30,7 @@ urlpatterns = [
     url(r'^track/(?P<track_id>[0-9]*)/thumbnail$', views.thumbnail_track, name="thumbnail_track"),
     url(r'^track/(?P<track_id>[0-9]*)/new_switch$', views.new_switch, name="new_switch"),
     url(r'^track/(?P<track_id>[0-9]*)/simulation/$', views_sim.simulation, name="simulation"),
+    url(r'^reset$', views.reset, name="reset"),
+    url(r'^track/(?P<track_id>[0-9]*)/simulation_start/$', views_sim.simulation_start, name="simulation_start"),
 
 ]

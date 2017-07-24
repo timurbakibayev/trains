@@ -8,11 +8,25 @@ from tutu import draw
 
 def index(request):
     tracks = Track.objects.all()
-    draw.something()
+    # draw.something()
     tracks_plus = []
     for track in tracks:
         t = {"id":track.id, "name":track.name, "start_name":track.start_name}
         t["length"] = track.length()
+        tracks_plus.append(t)
+    context = {"tracks": tracks_plus}
+    return render(request, 'index.html', context)
+
+
+def reset(request):
+    tracks = Track.objects.all()
+    for i in tracks:
+        i.simulation_in_progress = False
+        i.save()
+    # draw.something()
+    tracks_plus = []
+    for track in tracks:
+        t = {"id": track.id, "name": track.name, "start_name": track.start_name, "length": track.length()}
         tracks_plus.append(t)
     context = {"tracks": tracks_plus}
     return render(request, 'index.html', context)

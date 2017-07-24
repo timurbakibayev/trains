@@ -255,6 +255,17 @@
                 var responseObject = JSON.parse(this.response);
                 console.log(responseObject);
                 if (this.status == 201) {
+                    var url1 = "/track/{{ track.id }}/simulation_start/";
+                    var xhr1 = new XMLHttpRequest();
+                    var trackId1 = {{ track.id }};
+                    xhr1.open('POST', url1, true);
+                    xhr1.setRequestHeader('Content-Type', 'application/json; charset=UTF-8');
+                    var sendObject1 = JSON.stringify({
+                        track_id: {{ track.id }},
+                        start: true
+                    });
+                    xhr1.send(sendObject1);
+                    alert("Симуляция запущена")
                     location.reload();
                 } else {
                     var errors = "";
