@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 {% load static %}
+{% load tz %}
 
 <head>
     <meta charset="utf-8">
@@ -210,10 +211,17 @@
                 class="glyphicon glyphicon-flash"></span> Запустить симулятор</a>
     {% else %}
         <a href="#" id="sim_button" style="zoom: 0.8; margin-left: 10%" class="btn btn-primary"><span
-                class="glyphicon glyphicon-flash"></span> Симуляция в процессе. Нажмите для обновления.</a>
+                class="glyphicon glyphicon-flash"></span> Симуляция {{ track.simulation_progress }}%. Нажмите для обновления.</a>
     {% endif %}
     {% if track.simulation_filename %}
-        <a href="#" class="btn btn-success"><span class="glyphicon glyphicon-cloud-download"></span> Скачать видео (GIF)</a>
+        <!-- <a href="/serve/{{ track.simulation_filename }}" style="zoom: 0.8" class="btn btn-success"><span class="glyphicon glyphicon-cloud-download"></span> Скачать и посмотреть видео ({{ track.simulation_date_time|date:"d.m, H:i" }})</a> -->
+        {% timezone "Asia/Almaty" %}
+        {% endtimezone %}
+        <br>
+        <div style="padding-left: 10%; padding-right: 10%; text-align: center">
+            Симуляция от {{ track.simulation_date_time|date:"d.m, H:i" }}<br>
+            <img src="/serve/{{ track.simulation_filename }}" width="80%">
+        </div>
     {% endif %}
 </div>
 

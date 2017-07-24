@@ -17,6 +17,8 @@ from django.conf.urls import url
 from django.contrib import admin
 from tutu import views
 from tutu import views_sim
+from django.views.static import serve
+from trains import settings
 
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
@@ -31,6 +33,7 @@ urlpatterns = [
     url(r'^track/(?P<track_id>[0-9]*)/new_switch$', views.new_switch, name="new_switch"),
     url(r'^track/(?P<track_id>[0-9]*)/simulation/$', views_sim.simulation, name="simulation"),
     url(r'^reset$', views.reset, name="reset"),
+    url(r'^serve/(?P<path>.*)$', serve, {'document_root': settings.PICS_DIR}),
+    url(r'^files/(?P<file_url>.*)$', views_sim.serve_upload_files, name="file"),
     url(r'^track/(?P<track_id>[0-9]*)/simulation_start/$', views_sim.simulation_start, name="simulation_start"),
-
 ]

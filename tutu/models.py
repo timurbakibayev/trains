@@ -5,7 +5,9 @@ class Track(models.Model):
     name = models.TextField(default="Старт-Финиш")
     start_name = models.TextField(default="Старт")
     simulation_in_progress = models.BooleanField(default=False)
+    simulation_progress = models.IntegerField(default=0)
     simulation_filename = models.TextField(max_length=1000, blank=True, null=True)
+    simulation_date_time = models.DateTimeField(null=True, blank=True)
 
     def length(self):
         switches = Switch.objects.filter(track_id=self.id)
