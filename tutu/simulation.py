@@ -92,11 +92,11 @@ def simulate(track, prefix):
             if train.switch is None and not train.finished:
                 switch_is_busy = False
                 for train1 in trains:
-                    if train1.set_switch(train.next_switch):
+                    if train1.switch == train.next_switch:
                         switch_is_busy = True
                 if not switch_is_busy:
                     train.set_switch(train.next_switch)
-                    train.set_switch_position_0_to_1((0,1)[train.dx > 0])
+                    train.set_switch_position_0_to_1((0,1)[train.dx < 0])
                     if train.switch is None:
                         train.set_finished(True)
                         train.set_running(False)
@@ -119,6 +119,6 @@ def simulate(track, prefix):
                     start = float(start_position[train.switch.id])
                     train.set_position(start + r*(float(train.switch.position) - float(start)))
 
-        if step % 4 == 0:
+        if step % 2 == 0:
             files.append(draw.all(track, prefix, step, trains, switches))
     draw.compose_video(files, prefix)
