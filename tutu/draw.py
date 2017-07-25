@@ -30,7 +30,7 @@ def something():
 
 
 def compose_video(files,new_filename):
-    with imageio.get_writer(pics + new_filename + ".gif", mode='I', fps=7) as writer:
+    with imageio.get_writer(pics + new_filename + ".gif", mode='I', fps=15) as writer:
         for filename in files:
             image = imageio.imread(filename)
             writer.append_data(image)
@@ -86,7 +86,7 @@ def all(track, prefix, step, trains, switches):
     width = 1000
     height = 50
     length = track.length()
-    image_size = (int(width + 15), int(height * 1.2))
+    image_size = (int(width + height/5), int(height * 2.5))
     image = Image.new("RGBA", image_size, (0, 0, 0, 0))
     filename = pics + prefix + str(step) + ".png"
     draw = ImageDraw.Draw(image)
@@ -125,11 +125,31 @@ def all(track, prefix, step, trains, switches):
         last_switch_position = switch.position
 
     radius = height/12
+    finished_fw = 0
+    finished_bk = 0
+    on_way = 0
     for train in trains:
         if train.running:
+            on_way += 1
             x = float(train.position/float(length)*width)
             y = float(height/2)+radius*train.level
             draw.ellipse((x-radius, y-radius, x+radius, y+radius), fill=train.color)
+        if train.finished:
+            if train.dx > 0:
+                finished_fw += 1
+            else:
+                finished_bk += 1
+
+    progress_hrs = str(step // 60)
+    progress_min = str(step % 60)
+    progress_text = "Время: " + progress_hrs.zfill(2) + ":" + progress_min.zfill(2)
+    draw.text(xy=(10, height), text=progress_text, fill="black", font=font)
+    progress_text = "Время: " + progress_hrs.zfill(2) + ":" + progress_min.zfill(2)
+    draw.text(xy=(10, height + height/3), text="В пути: " + str(on_way) + " поездов", fill="black", font=font)
+    draw.text(xy=(10, height + height/3 * 2), text="Доехало: " +
+                                                   str(finished_fw) + "/" +
+                                                   str(finished_bk),
+              fill="black", font=font)
 
     del draw
     image.save(filename, "PNG")
