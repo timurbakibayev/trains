@@ -26,12 +26,19 @@ class Train:
         self.switch_position_0_to_1 = 0
         self.running = False
         self.finished = False
+        self.minutes_in_way = 0
         self.waiting = True
         self.station = None
         self.switch = None
         self.next_switch = None
         self.color = (random.randint(50,230),random.randint(50,230),random.randint(50,230),255)
         self.level = 0
+
+    def reset_minutes_in_way(self):
+        self.minutes_in_way = 0
+
+    def inc_minutes_in_way(self):
+        self.minutes_in_way += 1
 
     def set_switch_position_0_to_1(self, new_value):
         self.switch_position_0_to_1 = new_value
@@ -96,11 +103,12 @@ def simulate(track, prefix):
                 switch_is_busy = False
                 for train1 in trains:
                     if train1.switch == train.next_switch and train.next_switch is not None:
-                        if train.next_switch.number_of_tracks == 1 or train.dx == train1.dx:
+                        if train.next_switch.number_of_tracks == 1 or (train.dx == train1.dx and train1.minutes_in_way < 8):
                             switch_is_busy = True
                 if not switch_is_busy:
                     train.set_switch(train.next_switch)
                     train.set_switch_position_0_to_1((0,1)[train.dx < 0])
+                    train.reset_minutes_in_way()
                     if train.switch is None:
                         train.set_finished(True)
                         train.set_running(False)
@@ -125,6 +133,7 @@ def simulate(track, prefix):
                     r = train.switch_position_0_to_1
                     start = float(start_position[train.switch.id])
                     train.set_position(start + r*(float(train.switch.position) - float(start)))
+                    train.inc_minutes_in_way()
                     if train.switch.number_of_tracks > 1:
                         train.set_level((-1,1)[train.dx < 0])
                     else:
