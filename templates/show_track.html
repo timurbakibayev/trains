@@ -217,7 +217,6 @@
     {% if track.simulation_filename %}
         <!-- <a href="/serve/{{ track.simulation_filename }}" style="zoom: 0.8" class="btn btn-success"><span class="glyphicon glyphicon-cloud-download"></span> Скачать и посмотреть видео ({{ track.simulation_date_time|date:"d.m, H:i" }})</a> -->
         {% timezone "Asia/Almaty" %}
-        {% endtimezone %}
         <br>
         <div style="padding-left: 10%; padding-right: 10%; text-align: center">
             Симуляция от {{ track.simulation_date_time|date:"d.m, H:i" }}<br>
@@ -225,6 +224,7 @@
                 <img src="/serve/{{ track.simulation_filename }}" width="80%">
             </a>
         </div>
+        {% endtimezone %}
     {% endif %}
 </div>
 
