@@ -12,29 +12,31 @@ pics = settings.PICS_DIR
 
 def something():
     files = []
-    image = Image.new("RGBA", (320, 320), (0, 0, 0, 0))
-    draw = ImageDraw.Draw(image)
-    draw.ellipse((10, 10, 300, 300), fill="red", outline="red")
-    del draw
-    image.save(pics + "test0.png", "PNG")
-    files.append(pics + "test0.png")
-
-    image = Image.new("RGBA", (320, 320), (0, 0, 0, 0))
-    draw = ImageDraw.Draw(image)
-    draw.ellipse((110, 110, 200, 200), fill="green", outline="blue")
-    del draw
-    image.save(pics + "test1.png", "PNG")
-    files.append(pics + "test1.png")
-
-    compose_video(files, "movie")
+    # image = Image.new("RGBA", (320, 320), (0, 0, 0, 0))
+    # draw = ImageDraw.Draw(image)
+    # draw.ellipse((10, 10, 300, 300), fill="red", outline="red")
+    # del draw
+    # image.save(pics + "test0.png", "PNG")
+    # files.append(pics + "test0.png")
+    #
+    # image = Image.new("RGBA", (320, 320), (0, 0, 0, 0))
+    # draw = ImageDraw.Draw(image)
+    # draw.ellipse((110, 110, 200, 200), fill="green", outline="blue")
+    # del draw
+    # image.save(pics + "test1.png", "PNG")
+    # files.append(pics + "test1.png")
+    #
+    # compose_video(files, "movie")
 
 
 def compose_video(files,new_filename):
-    with imageio.get_writer(pics + new_filename + ".gif", mode='I', fps=15) as writer:
+    with imageio.get_writer(os.path.join(settings.PICS_DIR,new_filename + ".gif"), mode='I', fps=15) as writer:
         for filename in files:
             image = imageio.imread(filename)
             writer.append_data(image)
             os.remove(filename)
+
+font_file = os.path.join(settings.BASE_DIR,"arial.ttf")
 
 
 def draw_track(track):
@@ -46,7 +48,8 @@ def draw_track(track):
     switches = Switch.objects.filter(track_id = track.id)
 
     text_position_y = height*9/12
-    font = ImageFont.truetype("arial.ttf", int(height/3))
+
+    font = ImageFont.truetype(font_file, int(height/3))
     draw.text(xy=(2,text_position_y), text="1", fill="green", font=font)
     last_switch_position = 0
     for i,switch in enumerate(switches):
@@ -63,7 +66,7 @@ def draw_track(track):
         pos = switch.position / track.length() * width
         draw.text(xy=(pos+1, text_position_y), text=str(i+2), fill="green", font=font)
         last_switch_position = switch.position
-    font = ImageFont.truetype("arial.ttf", int(height/3))
+    font = ImageFont.truetype(font_file, int(height/3))
     text_position_y = 0
     last_switch_position = 0
     for i,switch in enumerate(switches):
@@ -88,12 +91,13 @@ def all(track, prefix, step, trains, switches):
     length = track.length()
     image_size = (int(width + height/5), int(height * 2.5))
     image = Image.new("RGBA", image_size, (0, 0, 0, 0))
-    filename = pics + prefix + str(step) + ".png"
+    filename = os.path.join(settings.PICS_DIR, prefix + str(step) + ".png")
+
     draw = ImageDraw.Draw(image)
     draw.rectangle(xy=(0,0, image_size[0], image_size[1]), fill="white", outline="white")
 
     text_position_y = height * 9 / 12
-    font = ImageFont.truetype("arial.ttf", int(height / 3))
+    font = ImageFont.truetype(font_file, int(height / 3))
     draw.text(xy=(2, text_position_y), text="1", fill="green", font=font)
     last_switch_position = 0
     for i, switch in enumerate(switches):
@@ -110,7 +114,7 @@ def all(track, prefix, step, trains, switches):
         pos = switch.position / track.length() * width
         draw.text(xy=(pos + 1, text_position_y), text=str(i + 2), fill="green", font=font)
         last_switch_position = switch.position
-    font = ImageFont.truetype("arial.ttf", int(height / 3))
+    font = ImageFont.truetype(os.path.join(settings.BASE_DIR,"arial.ttf"), int(height / 3))
     text_position_y = 0
     last_switch_position = 0
     for i, switch in enumerate(switches):
