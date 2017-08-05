@@ -43,10 +43,18 @@
 
             <div class="form-row">
                 <label>
-                    <span>Основное время в пути (в минутах)</span>
-                    <input type="number" name="switch_main" value="{{ switch.mins_main }}">
+                    <span>Основное время в пути туда (в минутах)</span>
+                    <input type="number" name="switch_main_fw" value="{{ switch.mins_main_fw }}">
                 </label>
             </div>
+
+            <div class="form-row">
+                <label>
+                    <span>Основное время в пути обратно (в минутах)</span>
+                    <input type="number" name="switch_main_bk" value="{{ switch.mins_main_bk }}">
+                </label>
+            </div>
+
 
             <div class="form-row">
                 <label>

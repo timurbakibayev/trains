@@ -124,7 +124,7 @@ def simulate(track, prefix):
         for train in trains:
             if train.switch is not None:
                 train.set_switch_position_0_to_1(train.switch_position_0_to_1 + train.dx /
-                                                 (train.switch.mins_main +
+                                                 ((train.switch.mins_main_fw,train.switch.mins_main_bk)[train.dx<0] +
                                                   train.switch.mins_acc +
                                                   train.switch.mins_brk))
                 if train.switch_position_0_to_1 < 0 or train.switch_position_0_to_1 > 1:

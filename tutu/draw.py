@@ -38,6 +38,8 @@ def compose_video(files,new_filename):
 
 font_file = os.path.join(settings.BASE_DIR,"arial.ttf")
 
+font_file = "/home/uzarra/git/trains/arial.ttf"
+
 
 def draw_track(track):
     width = 1000
@@ -48,7 +50,7 @@ def draw_track(track):
     switches = Switch.objects.filter(track_id = track.id)
 
     text_position_y = height*9/12
-
+    print(font_file)
     font = ImageFont.truetype(font_file, int(height/3))
     draw.text(xy=(2,text_position_y), text="1", fill="green", font=font)
     last_switch_position = 0

@@ -146,7 +146,8 @@
             <th>Кол-во путей</th>
             <th>Ёмкость</th>
             <th>Разг.</th>
-            <th>Время хода</th>
+            <th>Время туда</th>
+            <th>Время обратно</th>
             <th>Торм.</th>
             <th>Скорость</th>
             <th>Проп. сп.</th>
@@ -180,7 +181,10 @@
                     {{ switch.switch.mins_acc }} м
                 </td>
                 <td>
-                    {{ switch.switch.mins_main }} м
+                    {{ switch.switch.mins_main_fw }} м
+                </td>
+                <td>
+                    {{ switch.switch.mins_main_bk }} м
                 </td>
                 <td>
                     {{ switch.switch.mins_brk }} м
