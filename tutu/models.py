@@ -32,7 +32,8 @@ class Switch(models.Model):
     is_end = models.BooleanField(default=False)
     mins_acc = models.IntegerField()
     mins_brk = models.IntegerField()
-    mins_main = models.IntegerField()
+    mins_main_fw = models.IntegerField()
+    mins_main_bk = models.IntegerField(default=1)
 
     def __str__(self):
         return str(self.position) + ": " + self.name

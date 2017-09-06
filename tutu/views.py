@@ -73,9 +73,14 @@ def new_switch(request, track_id):
         except:
             s.mins_acc = 0
         try:
-            s.mins_main = float(request.POST["switch_main"])
+            s.mins_main_fw = float(request.POST["switch_main_fw"])
         except:
-            s.mins_main = 0
+            s.mins_main_fw = 0
+        try:
+            s.mins_main_bk = float(request.POST["switch_main_bk"])
+        except:
+            s.mins_main_bk = 0
+
         try:
             s.mins_brk = float(request.POST["switch_brk"])
         except:
@@ -167,9 +172,13 @@ def edit_switch(request, track_id, switch_id):
             except:
                 s.mins_acc = 0
             try:
-                s.mins_main = float(request.POST["switch_main"])
+                s.mins_main_fw = float(request.POST["switch_main_fw"])
             except:
-                s.mins_main = 0
+                s.mins_main_fw = 0
+            try:
+                s.mins_main_bk = float(request.POST["switch_main_bk"])
+            except:
+                s.mins_main_bk = 0
             try:
                 s.mins_brk = float(request.POST["switch_brk"])
             except:
@@ -198,8 +207,10 @@ def show_track(request, track_id):
 
     prev_pos = 0
     for i,switch in enumerate(switches_orig):
-        new_sw = {"switch": switch, "sum": switch.mins_acc + switch.mins_brk + switch.mins_main}
-        new_sw["capacity"] = (int((60*23)/new_sw["sum"]),int((60*23)/new_sw["sum"]/2))[switch.number_of_tracks<2]
+        new_sw = {"switch": switch, "sum": switch.mins_acc + switch.mins_brk + switch.mins_main_fw + switch.mins_main_bk}
+        single = int((60*23)*0.96/new_sw["sum"])
+        double = single * int(new_sw["sum"]/8)
+        new_sw["capacity"] = (double,single)[switch.number_of_tracks<2]
         new_sw["number"] = i+2
         length = switch.position - prev_pos
         time = new_sw["sum"]/60
