@@ -1,5 +1,6 @@
 from django.db import models
 
+
 # Create your models here.
 class Track(models.Model):
     name = models.TextField(default="Старт-Финиш")
@@ -19,6 +20,7 @@ class Track(models.Model):
 
     def __str__(self):
         return self.name + " (" + str(self.length()) + " км.)"
+
 
 class Switch(models.Model):
     track = models.ForeignKey(Track, on_delete=models.CASCADE)

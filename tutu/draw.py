@@ -30,7 +30,7 @@ def something():
 
 
 def compose_video(files,new_filename):
-    with imageio.get_writer(os.path.join(settings.PICS_DIR,new_filename + ".gif"), mode='I', fps=15) as writer:
+    with imageio.get_writer(os.path.join(settings.PICS_DIR,new_filename + ".gif"), mode='I', fps=15, subrectangles=True) as writer:
         for filename in files:
             image = imageio.imread(filename)
             writer.append_data(image)

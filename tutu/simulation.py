@@ -90,7 +90,7 @@ def simulate(track, prefix):
         train.next_switch = (first_switch,last_switch)[i % 2]
         trains.append(train)
     files = []
-    number_of_steps_to_simulate = 60*24
+    number_of_steps_to_simulate = 60*24 #60*24
     for step in range(number_of_steps_to_simulate):
         if step % 100 == 0:
             track.simulation_progress = int(step/number_of_steps_to_simulate*100/1.2)
