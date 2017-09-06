@@ -24,7 +24,24 @@
                     <input type="text" name="track_start_name" value="{{ track.start_name }}">
                 </label>
             </div>
-
+            <div class="form-row">
+                <label>
+                    <span>Кол-во пассажирских поездов (пар в сут)</span>
+                    <input type="number" step="0.01" name="number_of_passenger_trains" value="{{ track.number_of_passenger_trains }}">
+                </label>
+            </div>
+            <div class="form-row">
+                <label>
+                    <span>Кол-во грузовых поездов (пар в сут)</span>
+                    <input type="number" step="0.01" name="number_of_cargo_trains" value="{{ track.number_of_cargo_trains }}">
+                </label>
+            </div>
+            <div class="form-row">
+                <label>
+                    <span>Густота НЕТТО (в млн ткм/км)</span>
+                    <input type="number" step="0.01" name="density_netto" value="{{ track.density_netto }}">
+                </label>
+            </div>
 
             <div class="modal-footer">
                 <button type="button" class="btn btn-default" data-dismiss="modal">Закрыть</button>

@@ -117,6 +117,22 @@ def edit_track(request, track_id):
                 t.length = float(request.POST["track_length"])
             except:
                 pass
+
+            try:
+                t.number_of_passenger_trains = float(request.POST["number_of_passenger_trains"])
+            except:
+                pass
+
+            try:
+                t.number_of_cargo_trains = float(request.POST["number_of_cargo_trains"])
+            except:
+                pass
+
+            try:
+                t.density_netto = float(request.POST["density_netto"])
+            except:
+                pass
+
             t.save()
             return HttpResponseRedirect("/")
     return render(request, "edit_track.html", context)
@@ -196,6 +212,9 @@ def edit_switch(request, track_id, switch_id):
     return render(request, "edit_switch.html", context)
 
 
+def round(a):
+    return "%.3f" % a
+
 @csrf_exempt
 def show_track(request, track_id):
     try:
@@ -214,7 +233,21 @@ def show_track(request, track_id):
         new_sw["number"] = i+2
         length = switch.position - prev_pos
         time = new_sw["sum"]/60
-        new_sw["speed"] = int(float(length)/time*100)/100
+        new_sw["speed"] = int(float(length)/time*10)/10
+        new_sw["nalich"] = new_sw["capacity"]-\
+                           (((track.number_of_cargo_trains + track.number_of_passenger_trains)/0.85)-
+                            (track.number_of_cargo_trains + track.number_of_passenger_trains))-track.number_of_passenger_trains
+        new_sw["potreb"] = (track.number_of_cargo_trains + track.number_of_passenger_trains)/0.85
+        new_sw["reserve_pairs"] = new_sw["nalich"] - new_sw["potreb"]
+        new_sw["train_weight"] = (track.density_netto * 1000000)/track.number_of_cargo_trains/365
+        new_sw["reserve_cargo"] = new_sw["train_weight"] * new_sw["reserve_pairs"] * 365 / 1000000
+        new_sw["positive"] = new_sw["reserve_cargo"] > 0
+
+        new_sw["nalich"] = round(new_sw["nalich"])
+        new_sw["potreb"] = round(new_sw["potreb"])
+        new_sw["reserve_pairs"] = round(new_sw["reserve_pairs"])
+        new_sw["reserve_cargo"] = round(new_sw["reserve_cargo"])
+        new_sw["train_weight"] = round(new_sw["train_weight"])
         switches.append(new_sw)
         prev_pos = switch.position
 

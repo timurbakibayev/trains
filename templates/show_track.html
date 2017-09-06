@@ -137,6 +137,9 @@
 <div style="padding: 5%">
     <h3 style="text-align: center">Путь {{ track.name }}</h3>
     <h4 style="text-align: center">Длина пути {{ track.length }} км.</h4>
+    <h4 style="text-align: center">Кол-во пассажирских поездов {{ track.number_of_passenger_trains }} пар/сут </h4>
+    <h4 style="text-align: center">Кол-во грузовых поездов {{ track.number_of_cargo_trains }} пар/сут</h4>
+    <h4 style="text-align: center">Густота нетто в груз.движении {{ track.density_netto }} млн ткм/км</h4>
     <table width="100%" style="margin-top: 30px; margin-left: 5%; width: 90%; text-align: center" class="table">
         <thead>
         <tr>
@@ -144,13 +147,17 @@
             <th>Раздельный пункт</th>
             <th>Позиция</th>
             <th>Кол-во путей</th>
-            <th>Ёмкость</th>
             <th>Разг.</th>
             <th>Время туда</th>
             <th>Время обратно</th>
             <th>Торм.</th>
             <th>Скорость</th>
             <th>Проп. сп.</th>
+            <th>Наличная п.с. без пасс.</th>
+            <th>Потребная п.с. (a=0.85)</th>
+            <th>Резерв пар поездов</th>
+            <th>Средний вес поезда</th>
+            <th>Резерв п.с. млн т.</th>
             <th>Изменить</th>
         </tr>
         </thead>
@@ -175,9 +182,6 @@
                     {{ switch.switch.number_of_tracks }}
                 </td>
                 <td>
-                    {{ switch.switch.trains_fit }}
-                </td>
-                <td>
                     {{ switch.switch.mins_acc }} м
                 </td>
                 <td>
@@ -194,6 +198,21 @@
                 </td>
                 <td>
                     {{ switch.capacity }}
+                </td>
+                <td>
+                    {{ switch.nalich }}
+                </td>
+                <td>
+                    {{ switch.potreb }}
+                </td>
+                <td>
+                    {{ switch.reserve_pairs }}
+                </td>
+                <td>
+                    {{ switch.train_weight }}
+                </td>
+                <td style="{% if switch.positive %}color: green {% else %} color: red {% endif %};">
+                    {{ switch.reserve_cargo }}
                 </td>
                 <td><a data-toggle="modal" href="{% url "delete_switch" track.id switch.switch.id %}"
                        data-target="#myModal">✘
@@ -221,13 +240,13 @@
     {% if track.simulation_filename %}
         <!-- <a href="/serve/{{ track.simulation_filename }}" style="zoom: 0.8" class="btn btn-success"><span class="glyphicon glyphicon-cloud-download"></span> Скачать и посмотреть видео ({{ track.simulation_date_time|date:"d.m, H:i" }})</a> -->
         {% timezone "Asia/Almaty" %}
-        <br>
-        <div style="padding-left: 10%; padding-right: 10%; text-align: center">
-            Симуляция от {{ track.simulation_date_time|date:"d.m, H:i" }}<br>
-            <a href="/serve/{{ track.simulation_filename }}">
-                <img src="/serve/{{ track.simulation_filename }}" width="80%">
-            </a>
-        </div>
+            <br>
+            <div style="padding-left: 10%; padding-right: 10%; text-align: center">
+                Симуляция от {{ track.simulation_date_time|date:"d.m, H:i" }}<br>
+                <a href="/serve/{{ track.simulation_filename }}">
+                    <img src="/serve/{{ track.simulation_filename }}" width="80%">
+                </a>
+            </div>
         {% endtimezone %}
     {% endif %}
 </div>

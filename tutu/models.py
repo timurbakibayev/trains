@@ -10,6 +10,10 @@ class Track(models.Model):
     simulation_filename = models.TextField(max_length=1000, blank=True, null=True)
     simulation_date_time = models.DateTimeField(null=True, blank=True)
 
+    number_of_passenger_trains = models.FloatField(default=3)
+    number_of_cargo_trains = models.FloatField(default=10)
+    density_netto = models.FloatField(default=10.5)
+
     def length(self):
         switches = Switch.objects.filter(track_id=self.id)
         maximum = 0

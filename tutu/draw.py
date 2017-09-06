@@ -9,26 +9,6 @@ from PIL import Image, ImageDraw, ImageFont
 from trains import settings
 pics = settings.PICS_DIR
 
-
-def something():
-    files = []
-    # image = Image.new("RGBA", (320, 320), (0, 0, 0, 0))
-    # draw = ImageDraw.Draw(image)
-    # draw.ellipse((10, 10, 300, 300), fill="red", outline="red")
-    # del draw
-    # image.save(pics + "test0.png", "PNG")
-    # files.append(pics + "test0.png")
-    #
-    # image = Image.new("RGBA", (320, 320), (0, 0, 0, 0))
-    # draw = ImageDraw.Draw(image)
-    # draw.ellipse((110, 110, 200, 200), fill="green", outline="blue")
-    # del draw
-    # image.save(pics + "test1.png", "PNG")
-    # files.append(pics + "test1.png")
-    #
-    # compose_video(files, "movie")
-
-
 def compose_video(files,new_filename):
     with imageio.get_writer(os.path.join(settings.PICS_DIR,new_filename + ".gif"), mode='I', fps=15, subrectangles=True) as writer:
         for filename in files:
@@ -38,7 +18,7 @@ def compose_video(files,new_filename):
 
 font_file = os.path.join(settings.BASE_DIR,"arial.ttf")
 
-font_file = "/home/uzarra/git/trains/arial.ttf"
+font_file = "/arial.ttf"
 
 
 def draw_track(track):
