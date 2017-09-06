@@ -145,16 +145,18 @@
         <tr>
             <th>Номер</th>
             <th>Раздельный пункт</th>
-            <th>Позиция</th>
+            <th>Расстояние от начала</th>
+            <th>Длина пути</th>
             <th>Кол-во путей</th>
-            <th>Разг.</th>
-            <th>Время туда</th>
-            <th>Время обратно</th>
-            <th>Торм.</th>
+            <th>Время хода туда</th>
+            <th>Время хода обратно</th>
+            <th>Время разгона</th>
+            <th>Время замедления</th>
+            <th>Станционный интервал</th>
             <th>Скорость</th>
-            <th>Проп. сп.</th>
-            <th>Наличная п.с. без пасс.</th>
-            <th>Потребная п.с. (a=0.85)</th>
+            <th>Пропускная способность</th>
+            <th>Наличная пропускная способность без учета пасс. с эксплуатац резервом</th>
+            <th>Потребная пропускная способность (a=0.85)</th>
             <th>Резерв пар поездов</th>
             <th>Средний вес поезда</th>
             <th>Резерв п.с. млн т.</th>
@@ -168,21 +170,21 @@
             </td>
         </tr>
         {% for switch in switches %}
-            <tr>
+            <tr {% if switch.worst %}style="background-color: pink;"{% endif %}>
                 <td>
                     <br>{{ switch.number }}
                 </td>
                 <td style="text-align: left">
-                    <br>{{ switch.switch.name }}
+                    {{ switch.switch.name }}
                 </td>
                 <td>
                     {{ switch.switch.position }}
                 </td>
                 <td>
-                    {{ switch.switch.number_of_tracks }}
+                    {{ switch.length }}
                 </td>
                 <td>
-                    {{ switch.switch.mins_acc }} м
+                    {{ switch.switch.number_of_tracks }}
                 </td>
                 <td>
                     {{ switch.switch.mins_main_fw }} м
@@ -191,7 +193,13 @@
                     {{ switch.switch.mins_main_bk }} м
                 </td>
                 <td>
+                    {{ switch.switch.mins_acc }} м
+                </td>
+                <td>
                     {{ switch.switch.mins_brk }} м
+                </td>
+                <td>
+                    {{ switch.switch.mins_station }} м
                 </td>
                 <td>
                     {{ switch.speed }} км.ч.

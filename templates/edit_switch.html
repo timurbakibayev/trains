@@ -36,13 +36,6 @@
 
             <div class="form-row">
                 <label>
-                    <span>Разгон (в минутах)</span>
-                    <input type="number" name="switch_acc" value="{{ switch.mins_acc }}">
-                </label>
-            </div>
-
-            <div class="form-row">
-                <label>
                     <span>Основное время в пути туда (в минутах)</span>
                     <input type="number" name="switch_main_fw" value="{{ switch.mins_main_fw }}">
                 </label>
@@ -55,11 +48,24 @@
                 </label>
             </div>
 
+            <div class="form-row">
+                <label>
+                    <span>Разгон (в минутах)</span>
+                    <input type="number" name="switch_acc" value="{{ switch.mins_acc }}">
+                </label>
+            </div>
 
             <div class="form-row">
                 <label>
                     <span>Торможение (в минутах)</span>
                     <input type="number" name="switch_brk" value="{{ switch.mins_brk }}">
+                </label>
+            </div>
+
+            <div class="form-row">
+                <label>
+                    <span>Станционный интервал (в минутах)</span>
+                    <input type="number" name="switch_station" value="{{ switch.mins_station }}">
                 </label>
             </div>
 
