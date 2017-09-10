@@ -16,9 +16,9 @@ def compose_video(files,new_filename):
             writer.append_data(image)
             os.remove(filename)
 
-font_file = os.path.join(settings.BASE_DIR,"arial.ttf")
+font_file = os.path.join(settings.BASE_DIR, "arial.ttf")
 
-font_file = "/arial.ttf"
+#font_file = "/arial.ttf"
 
 
 def draw_track(track):
