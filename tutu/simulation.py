@@ -1,4 +1,4 @@
-from background_task import background
+#from background_task import background
 from datetime import datetime
 from django.contrib.auth.models import User
 from tutu.models import Track
@@ -6,7 +6,6 @@ from tutu.models import Switch
 from tutu import draw
 import random
 
-@background(schedule=2)
 def start_sim(track_id):
     print("Started simulation for " + str(track_id))
     # lookup user by id and send them a message
