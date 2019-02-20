@@ -60,7 +60,7 @@ def simulation_start(request, track_id):
     if request.method == 'POST':
         data = request.data
         if "track_id" in data:
-            sim.start_sim.now(track_id)
+            sim.start_sim(track_id)
         return Response({"detail","Started"}, status=status.HTTP_201_CREATED)
     return Response({"detail", "Only POST allowed"}, status=status.HTTP_400_BAD_REQUEST)
 
